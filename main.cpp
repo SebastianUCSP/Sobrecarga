@@ -61,6 +61,9 @@ template<class T>
 class PointArray
 {
     public:
+        friend ostream& operator<<(ostream &output, PointArray o);
+        friend PointArray& operator+(PointArray const &obj1, PointArray const &obj2);
+
         PointArray()
         {
            this->points = new T[size];
@@ -85,25 +88,18 @@ class PointArray
            }
         }
 
-        PointArray operator+(const PointArray &a)
+        PointArray operator+(PointArray<T> const &obj1, PointArray<T> const &obj2)
         {
-            this->size = size + a.size;
-            new PointArray[this->size];
-            int temp = 0;
+            PointArray res;
 
-            for(int i = 0; i < a.size; i++)
-            {
-                this->points[i] = a.points[i];
-            }
-            for(int i = a.size; a < this-> )
+              int minSize = (obj1.size > obj2.size) ? obj2.size : obj1.size;
+
+              for (int i = 0; i < minSize; i++)
+                 res.push_back(obj1.points[i] + obj2.points[i]);
+
+              return res;
         }
-/*
-        ostream operator<<(ostream &output, const PointArray & a)
-        {
-            output << a.PointArray;
-            return output;
-        }
-*/
+
         ~PointArray()
         {
            delete[] points;
@@ -163,15 +159,14 @@ class PointArray
     delete[] points;
     size = newSize;
     points = pts;
-}
+    }
 };
 
-/*
-PointArray operator+(const PointArray &a, const PointArray &b)
-{
-    this->size =
-}
-*/
+ostream& operator<<(ostream &output, PointArray<T> o){
+    for (int i = 0; i < o.getSize(); i++)
+        output << o.points[i] << " ";
+    return output;
+
 
 int main () {
 
@@ -225,11 +220,11 @@ int main () {
     PointArray<int> newPt2(ptarr, 3);
     newPt2.imprimir();
     cout << endl;
-/*
+
     cout << "Suma de dos arrays: " << endl;
-    PointArray<int> suma = (newPt + newPt2);
-    suma.imprimir();
-*/
+    PointArray newPt3(newPt + newPt2);
+
+    cout << newPt3 << endl;
 
 
 /*
@@ -238,6 +233,8 @@ int main () {
     new2Pt.imprimir();
     cout << endl;
 */
+    PointArray mast3(mast1 + mast2);
+
 
 
     newPt.insert(2, a);
